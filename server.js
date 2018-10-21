@@ -4,16 +4,25 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var port=process.env.port||8000;
 
-app.use(cors());
+
 const
     glob = require('glob'),
     //expressHelper = require('../ServerSide/helpers/express.helper'),
     path = require('path');
 
+app.use(cors());
+
 //set up body parse
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+//set up Logging
+
+//set Up Global Error Handler
+
+//application performance monitoring tools
+
+//set the routes in place
 let initialize = (app) => {
     app.use(cors());
 	// Globbing through the routes
