@@ -3,45 +3,66 @@ const
     Schema =  mongoose.Schema;
 
 /**
- * Exam Schema : Stores the details about the exams a user have to go to
+ * Exam Schema : Stores the details about available exams
  */
 let ExamSchema = new Schema ( {
     
-    user :  {
-        type : Schema.Types.ObjectId , 
-        ref : 'User',
-        required : true
-    },
     name :  {
         type: String,
         required : true 
-    },                                                           
-    date : {
+    },
+    
+    //abbreviated name : short form -> NDA , CAT 
+    abname : {
+        type : String , 
+        required : true
+    },                                                        
+
+    type : {
         type: Date,
         required : true 
-    }, 
-    time : {
+    },
+
+    //tech , banking , PSU , LAW etc
+    category : {
         type: String,
         required : true 
-    },                                                             
-    address : {
-        addr_line_1 : String , 
-        addr_line_2 : String ,
-        street_addr : String ,
-        city        : String ,
-        state       : String ,
-        pincode     : String ,
-        country     : String 
-
     },
-    location :  {                                       //location user have to go to [latititude , longitude ]
-        type: { type: String },
-        coordinates: [],
+    //internation , national , discrict
+    level: {
+        type : Number, 
+        default : null
+    },
+
+    //is a valid exam
+    validated : {
+        type:Boolean,
+        default : true
+    },
+    icon : {
+        type:String,
+        default : 'default'
+    },
+    //upcoming , next month, next week
+    status : {
+        type : String , 
+        enum : ['Upcoming' , 'Next Month' , ''],
+        default : ''   
+    },
+    //date of exam
+    date : {
+        type : Date ,
+        default : null
+    },
+    //admit card release date
+    adreleasedate:{
+        type: Date ,
+        default : null
     }
 
 } , { timestamps });                                   //adds updateAt and createAd fields
 
 //adding index to help us with the queries
-ExamSchema.index({ "loc": "2dsphere" });
+ExamSchema.index({ "abname": 1} , { unique : true } );
 
 module.exports =  mongoose.model( 'exam' , ExamSchema );
