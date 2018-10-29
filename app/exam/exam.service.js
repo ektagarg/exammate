@@ -1,4 +1,5 @@
 const Exam = require('./exam.model');
+const ApplicationError = require('../services/error/errorhandler');
 
 //Validations
 let ValidateExam = function(){
@@ -11,19 +12,21 @@ let GetExam = async function( query , options ){
         return exams;
     }
     catch( err) {
-        throw new Error("Error Fetching exams");
+        throw new ApplicationError( err.toString() || "Some Error Occured" ); 
     }
 
 };
 
-let CreateExam = async function ( exam  ){
+let CreateExam = async function( exam ){
 
     try{
-        let savedExam   = await Exam.save(exam);
+        let newexam =  new Exam( exam );
+        let savedExam = await newexam.save();
         return true;
     }
     catch(err){
-        throw new Error("Error Fetching exams");
+        console.error("Err", err);
+        throw new ApplicationError("Error creating exam");
     }
 } 
 
@@ -35,7 +38,7 @@ let UpdateExam = async function( condition ,  exam ){
         return true;
     }
     catch(err){
-        throw new Error("Error Fetching exams");
+        throw new ApplicationError("Error Fetching exams");
     }
 }
 

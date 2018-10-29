@@ -1,16 +1,26 @@
-var express = require('express');
-var app = express();
-var cors = require('cors');
-var bodyParser = require('body-parser');
-var port=process.env.port||8000;
-
-
-const
+const 
+    express = require('express') ,
+    app = express(),
+    cors = require('cors'),
+    bodyParser = require('body-parser'),
+    port=process.env.port||8000 ,
+    mongoose = require('mongoose') , 
     glob = require('glob'),
+    config = require('./config/cofig'),
     //expressHelper = require('../ServerSide/helpers/express.helper'),
     path = require('path');
 
+
 app.use(cors());
+
+//set up the database
+mongoose.connect( config.database.connectionString , ( err ) => {
+    if ( err) {
+        console.error("failed to connect to the database");
+    }else{
+        console.log("Successfully connected to database in " + process.env.mode );
+    }
+});
 
 //set up body parse
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,9 +39,9 @@ let initialize = (app) => {
 	let rootPath  = path.normalize( __dirname );
     console.log(rootPath);
     let routes = glob.sync(rootPath + '/routes/*.js');
-    console.log(routes);
+    console.log("route: " , routes);
     routes.forEach(route => { 
-		console.log(route);
+		console.log( "route: " , route);
         require(route)(app);
     });
 

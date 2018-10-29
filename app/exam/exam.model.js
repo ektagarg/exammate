@@ -18,11 +18,6 @@ let ExamSchema = new Schema ( {
         required : true
     },                                                        
 
-    type : {
-        type: Date,
-        required : true 
-    },
-
     //tech , banking , PSU , LAW etc
     category : {
         type: String,
@@ -30,7 +25,8 @@ let ExamSchema = new Schema ( {
     },
     //internation , national , discrict
     level: {
-        type : Number, 
+        type : String, 
+        enum : ["National" , "District" , "International"],
         default : null
     },
 
@@ -60,7 +56,7 @@ let ExamSchema = new Schema ( {
         default : null
     }
 
-} , { timestamps });                                   //adds updateAt and createAd fields
+} , { timestamps: true });                                   //adds updateAt and createAd fields
 
 //adding index to help us with the queries
 ExamSchema.index({ "abname": 1} , { unique : true } );

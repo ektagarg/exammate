@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./**/*.spec.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,10 @@
     "mongoose": "^5.3.4",
     "nodemon": "^1.18.4",
     "passport": "^0.4.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "requests": "^0.2.2"
+  },
+  "devDependencies": {
+    "mockery": "^2.1.0"
   }
 }
