@@ -4,12 +4,12 @@ const
     express = require('express'),
     router = express.Router(),
     ExamController = require('../app/exam/exam.controller');
+    
 
 router.get( ''  , ExamController.GetExams );
-router.get(':exam', ExamController.GetExam  );
 router.post('' , ExamController.CreateExam );
-router.put(':exam' , ExamController.UpdateExam )
-
+router.put('/exam/:id' , ExamController.UpdateExam )
+router.get('/exam/:id', ExamController.GetExam);
 
 module.exports = function(app ) {
 

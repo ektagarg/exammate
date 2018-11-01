@@ -27,7 +27,7 @@ let ExamSchema = new Schema ( {
     level: {
         type : String, 
         enum : ["National" , "District" , "International"],
-        default : null
+        default : "National"
     },
 
     //is a valid exam

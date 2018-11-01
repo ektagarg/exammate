@@ -23,6 +23,7 @@
     "requests": "^0.2.2"
   },
   "devDependencies": {
+    "chai-http": "^4.2.0",
     "mockery": "^2.1.0"
   }
 }

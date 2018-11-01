@@ -12,8 +12,8 @@ const UserService = require('./exam.service');
 let GetExams = async function(req,res){
     try { 
 
-        let exams = await UserService.GetExam({} , {});
-        return res.status( HttpStatus.OK).json( {"exams" : exams } );
+        let exams = await UserService.GetExams({} , {});
+        return res.status( HttpStatus.OK).json( exams  );
 
     }catch(err){
         return res.status( err.status).json(err);
@@ -25,21 +25,27 @@ let GetExams = async function(req,res){
  * @param {Object} req The request Object
  * @param {Object} res The response Object
  */
-let GetExam = async  function( req , res){
+let GetExam = async function( req , res){
     try {
 
-        let examId = req.params.exam || req.query.exam;
+        let examId = req.params.id || req.query.id;
+        if ( ! examId ){
+            throw new ApplicationError("Exam Id No Supplied");
+        }
 
-        let exam  = await UserService.GetExam( { id : examId } );
+        let exam  = await UserService.GetExam( { _id : examId } );
         return res.status( HttpStatus.OK).json( {"exams" : exam } );
 
-    } catch (error) {
+    } catch (err) {
+        console.log( err);
+        if (! err instanceof ApplicationError ){
+            err = new ApplicationError( );
+        }
         return res.status( err.status).json(err);
     }
 }
 
 //POST
-
 /**
  * Creates a new exam entry in the database 
  * @param {Object} req The request Object
@@ -53,7 +59,7 @@ let CreateExam = async function(req , res){
         return res.status( HttpStatus.CREATED).json({"message" : "Success"});
 
     }catch( err){
-        console.log('errasdfasdf returned');
+
         return res.status( err.status).json(err);
     }
 }
@@ -68,19 +74,29 @@ let CreateExam = async function(req , res){
 let UpdateExam = async function( req, res){
     try {
         
-        let examId = req.params.exam || req.query.exam;
-        let exam = await UserService.GetExam( {id : examId} )
+        let examId = req.params.id;
+        let exam = await UserService.GetExam( {_id : examId} ) ;
         
+        
+        
+        
+        //these are the fields of the object
         let fields = ["name" , "abname" , "type" , "category" , "level" , "validated" , "icon" , "status"  , "date" , "adreleasedate"];
         
+        //go through each of the field and then check if any of them has to be updated else use previous value
         fields.forEach( (field) => {
-            exam[field] = req.body[field] || exam[field];
+
+            //take the value from body if exists
+            exam[field] = req.body[field] || exam[field] || null;
+        
         });
 
-        let saved = await exam.save();
+        //save the exam object and return the json.
+        let saved = await exam.save().catch( (err) => { throw new ApplicationError(err); });
         return res.status( HttpStatus.OK).json({"message" : "updated"});
 
     } catch (err) {
+        console.log(err);
         return res.status( err.status).json(err);        
     }
 }

@@ -6,7 +6,7 @@ let ValidateExam = function(){
     
 };
 
-let GetExam = async function( query , options ){
+let GetExams = async function( query , options ){
     try { 
         let exams = await Exam.find( query );
         return exams;
@@ -17,6 +17,21 @@ let GetExam = async function( query , options ){
 
 };
 
+let GetExam = async function( id ){
+    try{
+
+        let examArr = await Exam.findById( id ) ; 
+        
+        if ( !examArr)
+            throw new Error("Object Not Found");
+        return examArr;
+        
+    }catch(err){
+        throw new ApplicationError( err);
+    }
+    
+}
+
 let CreateExam = async function( exam ){
 
     try{
@@ -26,7 +41,10 @@ let CreateExam = async function( exam ){
     }
     catch(err){
         console.error("Err", err);
-        throw new ApplicationError("Error creating exam");
+        if ( err.name && err.name === "ValidationError")
+            throw new ApplicationError( JSON.parse( JSON.stringify(err))  , 422 );
+        else
+        throw new ApplicationError(err._message );
     }
 } 
 
@@ -56,4 +74,4 @@ let DeleteExam = async function ( exam){
 }
 
 
-module.exports = { GetExam , CreateExam , UpdateExam , DeleteExam  };
+module.exports = { GetExams, GetExam , CreateExam , UpdateExam , DeleteExam  };
