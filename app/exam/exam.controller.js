@@ -34,7 +34,7 @@ let GetExam = async function( req , res){
         }
 
         let exam  = await UserService.GetExam( { _id : examId } );
-        return res.status( HttpStatus.OK).json( {"exams" : exam } );
+        return res.status( HttpStatus.OK).json(  exam  );
 
     } catch (err) {
         console.log( err);
@@ -93,7 +93,7 @@ let UpdateExam = async function( req, res){
 
         //save the exam object and return the json.
         let saved = await exam.save().catch( (err) => { throw new ApplicationError(err); });
-        return res.status( HttpStatus.OK).json({"message" : "updated"});
+        return res.status( HttpStatus.OK).json({"message" : "Exam updated!" , "exam" : saved});
 
     } catch (err) {
         console.log(err);
