@@ -1,7 +1,7 @@
 const
 	path = require('path'),
 	rootPath = path.normalize(__dirname + '/..'),
-	database = require('./database'),
+	database = require('./db'),
 	env = process.env.NODE_ENV || 'development',
 	_ = require('lodash');
 

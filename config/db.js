@@ -1,7 +1,7 @@
 module.exports = {
     development: {
         provider: 'mongodb',
-        connectionString: 'mongodb://127.0.0.1:27017/exammate',
+        connectionString: 'mongodb://127.0.0.1/exammate',
         paginationItems: 10,
         agenda: 'mongodb://127.0.0.1/agenda'
     },

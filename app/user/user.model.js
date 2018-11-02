@@ -67,7 +67,7 @@ UserSchema.pre('save', function(next) {
         }
     }
 
-    console.log(this.password);
+    console.log('ger', this.password);
     next();
 });
 

@@ -1,55 +1,27 @@
-var express = require('express');
-var app = express();
-var cors = require('cors');
-var bodyParser = require('body-parser');
-var port=process.env.port||8000;
-
-
-const
-    glob = require('glob'),
-    //expressHelper = require('../ServerSide/helpers/express.helper'),
-    path = require('path');
-
-app.use(cors());
+const 
+	express = require('express'),
+	path = require('path'),
+	app = express(),
+	mongoose = require('mongoose'),
+//	userRoute = require('./routes/users.route'),
+	bodyParser = require('body-parser'),
+	server = require('http').createServer(app),
+	expressConfig = require('./config/express'),
+	port =  process.env.port ||  3000;
+// const ConnectionString = "mongodb://127.0.0.1/todo";
+app.use( express.static( path.join(__dirname , 'dist')) );
 
 //set up body parse
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+expressConfig( app );
 
-//set up Logging
+console.log("Server listening on port : " + port);
 
-//set Up Global Error Handler
+//set up route
+app.all('*', (req, res) => {
+	console.log(`[TRACE] Server 404 request: ${req.originalUrl}`);
+	res.status(200).sendFile(path.join(__dirname , 'dist/index.html'));	
+});
 
-//application performance monitoring tools
-
-//set the routes in place
-let initialize = (app) => {
-    app.use(cors());
-	// Globbing through the routes
-	let rootPath  = path.normalize( __dirname );
-    console.log(rootPath);
-    let routes = glob.sync(rootPath + '/routes/*.js');
-    console.log(routes);
-    routes.forEach(route => { 
-		console.log(route);
-        require(route)(app);
-    });
-
-    // for unmatched routes
-    app.use((req, res) => {
-        res.status(404).send('route not found');
-    });
-}
-
-initialize( app);
-
-app.listen(port, function(){
-	var datetime = new Date();
-	var message = "server running on port :"+port+" started at:"+datetime;
-	console.log(message);
-})
-
-
-
-
-
+server.listen( port); 

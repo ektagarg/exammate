@@ -29,7 +29,6 @@ let CreateUser = ( req , res ) =>{
 		return res.status(500).json(err);
 		return res.status(201).json(newUser);
 	});
-
 }  
 
 
@@ -52,7 +51,6 @@ let UserLogin = (req, res) => {
 					expiresIn: '12h'                         
 				});
 
-				
 				res.json({ user: user, token: token });
 
 			} catch (error) {
