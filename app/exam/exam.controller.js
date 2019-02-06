@@ -76,10 +76,7 @@ let UpdateExam = async function( req, res){
         
         let examId = req.params.id;
         let exam = await UserService.GetExam( {_id : examId} ) ;
-        
-        
-        
-        
+                
         //these are the fields of the object
         let fields = ["name" , "abname" , "type" , "category" , "level" , "validated" , "icon" , "status"  , "date" , "adreleasedate"];
         
